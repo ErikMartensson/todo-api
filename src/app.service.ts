@@ -11,6 +11,11 @@ export class AppService {
     return this.itemRepository.save(item)
   }
 
+  async deleteItem(id: string): Promise<boolean> {
+    const res = await this.itemRepository.delete(id);
+    return res.affected === 1;
+  }
+
   async checkItem(id: string): Promise<Item> {
     const item = await this.itemRepository.findOne(id);
     if (!item) {

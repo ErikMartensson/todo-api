@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Put, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Body, Param } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CreateItemDto, ItemDto } from './dtos/item.dto';
+import { CreateItemDto, DeleteItemDto, ItemDto } from './dtos/item.dto';
 import { Item } from './entities/item.entity';
 
 @Controller()
@@ -11,6 +11,12 @@ export class AppController {
   async postItem(@Body() createData: CreateItemDto): Promise<ItemDto> {
     const item = await this.appService.createItem(createData.content);
     return item.toDto();
+  }
+
+  @Delete(':id')
+  async deleteItem(@Param('id') id: string): Promise<DeleteItemDto> {
+    const success = await this.appService.deleteItem(id);
+    return { success };
   }
 
   @Put(':id/check')
