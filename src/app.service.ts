@@ -10,6 +10,10 @@ export class AppService {
     private readonly eventRepository: EventRepository,
   ) {}
 
+  async getAllItems(): Promise<Item[]> {
+    return this.itemRepository.getAll();
+  }
+
   async createItem(content: string): Promise<Item> {
     const item = await this.itemRepository.save(
       this.itemRepository.create({ content })
