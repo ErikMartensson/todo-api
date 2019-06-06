@@ -17,14 +17,14 @@ export class AppService {
 
   async createItem(content: string): Promise<Item> {
     const item = await this.itemRepository.save(
-      this.itemRepository.create({ content })
+      this.itemRepository.create({ content }),
     );
 
     const event = await this.eventRepository.save(
       this.eventRepository.create({
         event: 'create',
         item,
-      })
+      }),
     );
 
     return item;
@@ -42,7 +42,7 @@ export class AppService {
       this.eventRepository.create({
         event: 'delete',
         item,
-      })
+      }),
     );
 
     return true;
@@ -64,7 +64,7 @@ export class AppService {
       this.eventRepository.create({
         event: 'check',
         item,
-      })
+      }),
     );
 
     return item;
@@ -86,7 +86,7 @@ export class AppService {
       this.eventRepository.create({
         event: 'uncheck',
         item,
-      })
+      }),
     );
 
     return item;
