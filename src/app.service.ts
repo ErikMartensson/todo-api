@@ -95,4 +95,12 @@ export class AppService {
   async getAllEvents(): Promise<Event[]> {
     return this.eventRepository.getAll();
   }
+
+  async getEventsForItem(id: string): Promise<Event[]> {
+    const item = await this.itemRepository.findById(id);
+    if (!item) {
+      throw new HttpException('Item not found', HttpStatus.NOT_FOUND);
+    }
+    return item.events;
+  }
 }

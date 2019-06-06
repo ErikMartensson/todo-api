@@ -43,4 +43,10 @@ export class AppController {
     const events = await this.appService.getAllEvents();
     return events.map(event => event.toDto());
   }
+
+  @Get('events/:id')
+  async getEventsForItem(@Param('id') id: string): Promise<EventDto[]> {
+    const events = await this.appService.getEventsForItem(id);
+    return events.map(event => event.toDto());
+  }
 }
