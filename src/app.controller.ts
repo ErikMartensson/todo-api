@@ -7,6 +7,12 @@ import { Item } from './entities/item.entity';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get()
+  async getAllItems(): Promise<ItemDto[]> {
+    const items = await this.appService.getAllItems();
+    return items.map(item => item.toDto());
+  }
+
   @Post()
   async postItem(@Body() createData: CreateItemDto): Promise<ItemDto> {
     const item = await this.appService.createItem(createData.content);

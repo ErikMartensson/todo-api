@@ -6,4 +6,8 @@ export class ItemRepository extends Repository<Item> {
   findById(id: string) {
     return this.findOne({ id, deletedAt: null });
   }
+
+  getAll() {
+    return this.find({ deletedAt: null });
+  }
 }
