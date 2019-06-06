@@ -1,7 +1,8 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { ItemRepository} from './repositories/item.repository';
-import { EventRepository} from './repositories/event.repository';
+import { ItemRepository } from './repositories/item.repository';
+import { EventRepository } from './repositories/event.repository';
 import { Item } from './entities/item.entity';
+import { Event } from './entities/event.entity';
 
 @Injectable()
 export class AppService {
@@ -89,5 +90,9 @@ export class AppService {
     );
 
     return item;
+  }
+
+  async getAllEvents(): Promise<Event[]> {
+    return this.eventRepository.getAll();
   }
 }
