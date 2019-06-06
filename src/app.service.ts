@@ -1,14 +1,28 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ItemRepository} from './repositories/item.repository';
+import { EventRepository} from './repositories/event.repository';
 import { Item } from './entities/item.entity';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly itemRepository: ItemRepository) {}
+  constructor(
+    private readonly itemRepository: ItemRepository,
+    private readonly eventRepository: EventRepository,
+  ) {}
 
   async createItem(content: string): Promise<Item> {
-    const item = this.itemRepository.create({ content })
-    return this.itemRepository.save(item)
+    const item = await this.itemRepository.save(
+      this.itemRepository.create({ content })
+    );
+
+    const event = await this.eventRepository.save(
+      this.eventRepository.create({
+        event: 'create',
+        item,
+      })
+    );
+
+    return item;
   }
 
   async deleteItem(id: string): Promise<boolean> {
