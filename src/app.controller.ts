@@ -15,7 +15,7 @@ export class AppController {
   }
 
   @Post()
-  async postItem(@Body() createData: CreateItemDto): Promise<ItemDto> {
+  async createItem(@Body() createData: CreateItemDto): Promise<ItemDto> {
     const item = await this.appService.createItem(createData.content);
     return item.toDto();
   }
