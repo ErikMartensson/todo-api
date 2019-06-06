@@ -5,6 +5,7 @@ import { Event } from '../entities/event.entity';
 export class EventRepository extends Repository<Event> {
   /**
    * Returns all events where their parent item is NOT deleted.
+   * Also sort the results by event create date.
    */
   getAll() {
     return getConnection()

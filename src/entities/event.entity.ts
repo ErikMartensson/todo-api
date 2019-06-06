@@ -31,7 +31,7 @@ export class Event {
       id,
       event,
       createdAt,
-      itemId: item.id,
+      itemId: item ? item.id : undefined,
     };
   }
 }

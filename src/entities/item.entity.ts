@@ -35,7 +35,7 @@ export class Item {
   deletedAt: Date;
 
   @OneToMany(type => Event, event => event.item)
-  events: Event[];
+  events: Promise<Event[]>;
 
   toDto(): ItemDto {
     const { id, content, isChecked, createdAt } = this;
