@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ItemRepository } from './repositories/item.repository'
+import { EventRepository } from './repositories/event.repository'
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { ItemRepository } from './repositories/item.repository'
       synchronize: true,
       uuidExtension: 'pgcrypto',
     }),
-    TypeOrmModule.forFeature([ItemRepository]),
+    TypeOrmModule.forFeature([ItemRepository, EventRepository]),
   ],
   controllers: [AppController],
   providers: [AppService],
