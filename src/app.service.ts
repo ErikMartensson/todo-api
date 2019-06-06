@@ -26,7 +26,7 @@ export class AppService {
   }
 
   async deleteItem(id: string): Promise<boolean> {
-    const item = await this.itemRepository.findOne({ id, deletedAt: null });
+    const item = await this.itemRepository.findById(id);
     if (!item) {
       throw new HttpException('Item not found', HttpStatus.NOT_FOUND);
     }
@@ -44,20 +44,46 @@ export class AppService {
   }
 
   async checkItem(id: string): Promise<Item> {
-    const item = await this.itemRepository.findOne(id);
+    const item = await this.itemRepository.findById(id);
     if (!item) {
       throw new HttpException('Item not found', HttpStatus.NOT_FOUND);
     }
+    // If this item is already checked, just return it.
+    if (item.isChecked) {
+      return item;
+    }
     item.isChecked = true;
-    return this.itemRepository.save(item);
+    await this.itemRepository.save(item);
+
+    const event = await this.eventRepository.save(
+      this.eventRepository.create({
+        event: 'check',
+        item,
+      })
+    );
+
+    return item;
   }
 
   async uncheckItem(id: string): Promise<Item> {
-    const item = await this.itemRepository.findOne(id);
+    const item = await this.itemRepository.findById(id);
     if (!item) {
       throw new HttpException('Item not found', HttpStatus.NOT_FOUND);
     }
+    // If this item is already unchecked, just return it.
+    if (!item.isChecked) {
+      return item;
+    }
     item.isChecked = false;
-    return this.itemRepository.save(item);
+    await this.itemRepository.save(item);
+
+    const event = await this.eventRepository.save(
+      this.eventRepository.create({
+        event: 'uncheck',
+        item,
+      })
+    );
+
+    return item;
   }
 }
