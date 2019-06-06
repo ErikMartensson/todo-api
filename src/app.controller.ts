@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Delete, Put, Body, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateItemDto, DeleteItemDto, ItemDto } from './dtos/item.dto';
+import { EventDto } from './dtos/event.dto';
 import { Item } from './entities/item.entity';
 
 @Controller()
@@ -35,5 +36,11 @@ export class AppController {
   async uncheckItem(@Param('id') id: string): Promise<ItemDto> {
     const item = await this.appService.uncheckItem(id);
     return item.toDto();
+  }
+
+  @Get('events')
+  async getAllEvents(): Promise<EventDto[]> {
+    const events = await this.appService.getAllEvents();
+    return events.map(event => event.toDto());
   }
 }

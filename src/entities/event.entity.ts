@@ -21,16 +21,17 @@ export class Event {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @ManyToOne(type => Item, item => item.events)
+  @ManyToOne(type => Item, item => item.events, { eager: true })
   @JoinColumn({ name: 'item_id' })
   item: Item;
 
   toDto(): EventDto {
-    const { id, event, createdAt } = this;
+    const { id, event, createdAt, item } = this;
     return {
       id,
       event,
       createdAt,
+      itemId: item.id,
     };
   }
 }
