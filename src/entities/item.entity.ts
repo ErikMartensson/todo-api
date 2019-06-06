@@ -27,6 +27,13 @@ export class Item {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
+  @Column({
+    type: 'timestamp',
+    name: 'deleted_at',
+    nullable: true,
+  })
+  deletedAt: Date;
+
   @OneToMany(type => Event, event => event.item)
   events: Event[];
 

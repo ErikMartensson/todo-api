@@ -26,8 +26,21 @@ export class AppService {
   }
 
   async deleteItem(id: string): Promise<boolean> {
-    const res = await this.itemRepository.delete(id);
-    return res.affected === 1;
+    const item = await this.itemRepository.findOne({ id, deletedAt: null });
+    if (!item) {
+      throw new HttpException('Item not found', HttpStatus.NOT_FOUND);
+    }
+    item.deletedAt = new Date();
+    await this.itemRepository.save(item);
+
+    const event = await this.eventRepository.save(
+      this.eventRepository.create({
+        event: 'delete',
+        item,
+      })
+    );
+
+    return true;
   }
 
   async checkItem(id: string): Promise<Item> {
