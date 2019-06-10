@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  app:
+    container_name: todo.app
+    image: node:lts-alpine
+    volumes:
+      - .:/todo
+      - node_modules:/todo/node_modules
+    ports:
+      - 3000:3000
+    links:
+      - db
+    command:
+      - /bin/sh
+      - -c
+      - |
+          cd /todo
+          npm install
+          npm run start:dev
+    environment:
+      - DB_HOST=todo.db
+      - DB_USER=todo
+      - DB_PASSWORD=todo
+      - DB_NAME=todo
+
+  db:
+    container_name: todo.db
+    image: postgres:11-alpine
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=todo
+      - POSTGRES_PASSWORD=todo
+      - POSTGRES_DB=todo
+
+volumes:
+    node_modules:
+    postgres:
