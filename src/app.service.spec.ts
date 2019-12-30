@@ -45,4 +45,16 @@ describe('AppController', () => {
       expect(await appService.getAllItems()).toStrictEqual([item]);
     });
   });
+
+  describe('createItem', () => {
+    it('works', async () => {
+      const content = chance.string();
+      const item = new Item();
+      item.id = chance.string();
+      itemGetAll.mockResolvedValue([item])
+
+      const appService = app.get<AppService>(AppService);
+      expect(await appService.createItem(content)).toStrictEqual([item]);
+    });
+  });
 });
